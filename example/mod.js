@@ -1,0 +1,1 @@
+console.log('mod');imports('b.js');imports('a.js');

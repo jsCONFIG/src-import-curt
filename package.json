@@ -1,0 +1,39 @@
+{
+    "name": "src-import-curt",
+    "version": "0.0.1",
+    "description": "Roughly merge files for gulp.",
+    "main": "index.js",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:jsCONFIG/src-import-curt.git"
+    },
+    "keywords": [
+        "gulp",
+        "import",
+        "include",
+        "combine",
+        "src-import-curt"
+    ],
+    "author": {
+        "name": "BottleLiu",
+        "email": "clpliuping@126.com"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ],
+    "readmeFilename": "README.md",
+    "bugs": {
+        "url": "https://github.com/jsCONFIG/src-import-curt/issues"
+    },
+    "dependencies": {
+        "promise": "7.1.1",
+        "gulp-util": "~2.2.9",
+        "md5": "2.1.0",
+        "event-stream": "~3.1.0",
+        "default-extname": "0.0.3"
+    }
+}
