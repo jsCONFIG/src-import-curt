@@ -12,15 +12,20 @@ var srcCombine = function (entryFileId, srcMap, levelOrder) {
             if (level.hasOwnProperty(filePath)) {
                 unit = srcMap[filePath];
                 if (!unit.hasResolved) {
-                    unit.resolvedCode = (unit.codeFragment || []).map(function (codeFg) {
-                        if (codeFg && codeFg.thirdPart) {
-                            // 判断是否是最末枝节点
-                            return srcMap[codeFg.id].deps.length ?
-                                srcMap[codeFg.id].resolvedCode :
-                                srcMap[codeFg.id].originCode;
-                        }
-                        return codeFg;
-                    }).join('');
+                    if (unit.deps.length) {
+                        unit.resolvedCode = (unit.codeFragment || []).map(function (codeFg) {
+                            if (codeFg && codeFg.thirdPart) {
+                                // 判断是否是最末枝节点
+                                return srcMap[codeFg.id].deps.length ?
+                                    srcMap[codeFg.id].resolvedCode :
+                                    srcMap[codeFg.id].originCode;
+                            }
+                            return codeFg;
+                        }).join('');
+                    }
+                    else {
+                        unit.resolvedCode = unit.originCode;
+                    }
                     unit.hasResolved = true;
                 }
             }

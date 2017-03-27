@@ -4,30 +4,57 @@ src-import-curt
 [![srcImport](http://img.shields.io/npm/v/src-import-curt.svg)](https://www.npmjs.org/package/src-import-curt)
 [![srcImport](http://img.shields.io/npm/dm/src-import-curt.svg)](https://www.npmjs.org/package/src-import-curt)
 
-source combine for gulp
+Roughly merge files for gulp.
 
-# example
-## Normal
+# Install
 ```
+npm install src-import-curt
+```
+
+# Example
+
+```
+var imports = require('src-import-curt');
+var gulpRename = require('gulp-rename');
 gulp.task('src-import', function () {
   gulp.src(['devFile.js'])
     .pipe(imports())
+    .pipe(gulpRename('bundle.js'))
     .pipe(gulp.dest('./dest'));
 });
 ```
 
 devFile.js
+
 ```
-imports('./test1.js');
+imports('./test1.js')
 var b = function () {
   console.log('Hello src-import');
 };
 ```
-or
 
-devFile2.js
+test1.js
+
 ```
-var test1 = imports('./test1.js');
+var test1 = function () {
+    console.log('Hello test1');
+    imports('./part.js')
+};
+```
+
+part.js
+
+```
+console.log('code from part.js');
+```
+
+and `bundle.js` will be:
+
+```
+var test1 = function () {
+    console.log('Hello test1');
+    console.log('code from part.js');
+};
 var b = function () {
   console.log('Hello src-import');
 };
@@ -40,18 +67,6 @@ var b = function () {
 
   default:`imports`
 
-- opt.encoding
-  
-  default: 'utf-8'
-
-- opt.smart
-
-  default: `true`, Set `true` to let `var a = imports('./b');` available.
-
 - opt.basedir
 
   `basedir` for combine.
-
-# changelog V0.0.6
-
-- Gather temporary handler for `smart`;
