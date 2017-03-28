@@ -66,7 +66,7 @@ srcResolver.prototype.fileReader = function (filePath, levelCount, referPath, on
         );
     }
     else {
-        fs.readFile(filePath, function (err, data) {
+        fs.readFile(filePath, {encoding: self.opt.encoding},function (err, data) {
             if (err) {
                 onErr && onErr(utils.notFoundErr(filePath));
                 return false;
@@ -129,26 +129,31 @@ srcResolver.prototype.buildSrcMap = function (filePath, fileContent, levelCount,
     var execResult;
     var needToResolvedCount = 0;
     var noDeps = true;
-    var cur = 0;
     var partContent;
     var startStep = false;
+    var prevEndPos = 0;
+    var prevToCurrentStartStr;
+    var currentStartPos;
     while (execResult = reg.exec(fileContent)) {
+        currentStartPos = execResult.index;
         if (startStep === false) {
-            cur = startStep = execResult.index;
+            startStep = currentStartPos;
         }
         noDeps = false;
         var pathParam = execResult[4];
         var info = utils.merge({
             pathParam: pathParam
         }, utils.resolvePath(filePath, pathParam, cwd, basedir));
+        // 上一次结束位置与当前的开始位置间的内容
+        if (prevEndPos < currentStartPos) {
+            prevToCurrentStartStr = fileContent.slice(prevEndPos, currentStartPos);
+            prevToCurrentStartStr && codeFragment.push(prevToCurrentStartStr);
+        }
         // 开始符号
         if (execResult[1]) {
             codeFragment.push(execResult[1]);
         }
-        partContent = fileContent.slice(cur, execResult.index);
-        if (partContent) {
-            codeFragment.push(partContent);
-        }
+        // 依赖部分
         codeFragment.push({
             thirdPart: true,
             id: info.filePath
@@ -157,7 +162,6 @@ srcResolver.prototype.buildSrcMap = function (filePath, fileContent, levelCount,
         if (execResult[5]) {
             codeFragment.push(execResult[5]);
         }
-        cur = execResult.index + execResult[0].length;
         needToResolvedCount++;
         if (!currentDepsMap[info.filePath]) {
             currentDeps.push({filePath: info.filePath});
@@ -175,20 +179,15 @@ srcResolver.prototype.buildSrcMap = function (filePath, fileContent, levelCount,
             },
             onErr
         );
+        prevEndPos = currentStartPos + execResult[0].length;
     }
     if (noDeps) {
         codeFragment.push(fileContent);
         onEnd && onEnd(srcMap);
     }
     else {
-        // 头部
-        if (startStep) {
-            codeFragment.unshift(
-                fileContent.slice(0, startStep)
-            );
-        }
-        // 尾部
-        partContent = fileContent.slice(cur, fileContent.length);
+        // 最后一个的尾部
+        partContent = fileContent.slice(prevEndPos, fileContent.length);
         if (partContent) {
             codeFragment.push(partContent);
         }

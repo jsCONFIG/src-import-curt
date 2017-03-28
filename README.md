@@ -70,3 +70,7 @@ var b = function () {
 - opt.basedir
 
   `basedir` for combine.
+
+# ChangeLog V0.0.3
+
+* Fix code resolve error;

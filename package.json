@@ -1,6 +1,6 @@
 {
     "name": "src-import-curt",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Roughly merge files for gulp.",
     "main": "index.js",
     "scripts": {},
@@ -30,9 +30,7 @@
         "url": "https://github.com/jsCONFIG/src-import-curt/issues"
     },
     "dependencies": {
-        "promise": "7.1.1",
-        "gulp-util": "~2.2.9",
-        "md5": "2.1.0",
+        "gulp-watch": "4.3.11",
         "event-stream": "~3.1.0",
         "default-extname": "0.0.3"
     }

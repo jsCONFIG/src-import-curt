@@ -7,11 +7,11 @@ var utils = {
     smartyMerge: function (rootObj, newObj, isNumParse) {
         newObj = newObj || {};
         var tempObj = {};
-        for (var i in rootObj ) {
+        for (var i in rootObj) {
             tempObj[i] = rootObj[i];
             if (i in newObj) {
-                var temp = newObj[i],
-                    parseVal = parseFloat(temp, 10);
+                var temp = newObj[i];
+                var parseVal = parseFloat(temp, 10);
                 if (isNumParse && !isNaN(parseVal)) {
                     temp = parseVal;
                 }
@@ -33,6 +33,12 @@ var utils = {
         return rootObj;
     },
 
+    strToPureRegStr: function (str) {
+        return str.replace(/[-.\\[\]$+*^()?|:=!{},]/g, function (item) {
+            return '\\' + item;
+        });
+    },
+
     regGenerator: function (keyword) {
         /**
          * $1: startSym
@@ -41,13 +47,6 @@ var utils = {
          * $4: path
          */
         return new RegExp(['([^0-9a-zA-Z\\-_]|\\s+|^)(', keyword, ')\\((\'|")\\s*([^"\'*:><?\\|]+)\\3\\s*\\)(;??)'].join(''), 'g');
-    },
-
-    // 从匹配中解析出信息
-    resolveInfoFromMatch: function (matchArr) {
-        var info = {
-            keyword: matchArr
-        };
     },
 
     buildError: function (filePath, msg) {
@@ -89,12 +88,9 @@ var utils = {
         };
     },
 
-
-
     // 解析依赖
     resolveCombine: function (fileGroup) {
         var groupMap = {};
-        var combinedContent = '';
         fileGroup.forEach(function (fileInfo) {
             groupMap[fileInfo.filePath] = fileInfo;
         });
@@ -122,7 +118,7 @@ var utils = {
     unikey: function (len) {
         len = len || 9;
         var result = '';
-        for( ; result.length < len; result += Math.random().toString(36).substr(2) );
+        for(; result.length < len; result += Math.random().toString(36).substr(2));
         return result.substr(0, len);
     },
 
@@ -148,7 +144,7 @@ var utils = {
     mdwFilePath: function (filePath, cwd) {
         filePath = defExt.resolveFilePath(filePath);
         if (filePath.indexOf(cwd) === -1) {
-            filePath =  path.join(cwd, filePath);
+            filePath = path.join(cwd, filePath);
         }
         return filePath;
     }
