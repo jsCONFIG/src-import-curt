@@ -1,5 +1,4 @@
 var path = require('path');
-var md5 = require('md5');
 var defaultExtname = require('default-extname');
 var defExt = defaultExtname();
 
@@ -120,11 +119,6 @@ var utils = {
         var result = '';
         for(; result.length < len; result += Math.random().toString(36).substr(2));
         return result.substr(0, len);
-    },
-
-    // 发号器
-    keyCreator: function (absoluteFilePath) {
-        return '_' + md5(absoluteFilePath);
     },
 
     notFoundMsg: function (filePath) {

@@ -71,6 +71,6 @@ var b = function () {
 
   `basedir` for combine.
 
-# ChangeLog V0.0.3
+# ChangeLog V0.0.4
 
 * Fix code resolve error;

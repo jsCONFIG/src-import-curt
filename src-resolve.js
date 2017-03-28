@@ -2,7 +2,6 @@
  * 资源关系解析
  */
 var fs = require('fs');
-var Promise = require('promise');
 var path = require('path');
 var utils = require('./utils');
 var defaultExtname = require('default-extname');
@@ -66,7 +65,7 @@ srcResolver.prototype.fileReader = function (filePath, levelCount, referPath, on
         );
     }
     else {
-        fs.readFile(filePath, {encoding: self.opt.encoding},function (err, data) {
+        fs.readFile(filePath, {encoding: self.opt.encoding}, function (err, data) {
             if (err) {
                 onErr && onErr(utils.notFoundErr(filePath));
                 return false;
@@ -90,11 +89,8 @@ srcResolver.prototype.buildSrcMap = function (filePath, fileContent, levelCount,
     var opt = this.opt;
     var cwd = opt.cwd;
     var basedir = opt.basedir || '';
-    var matchArr;
-    var dependencies = [];
     var absolutePath = path.resolve(filePath);
     var filePathInfo = utils.fixFilePath(absolutePath);
-    var extname = filePathInfo.extname;
     var srcMap = this.srcMap;
     var self = this;
     absolutePath = filePathInfo.path;
